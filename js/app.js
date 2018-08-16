@@ -1,11 +1,10 @@
 var cat = $('#cat-pic');
 var clickCount = $('#click-count');
 var catContainer = $('#cat-container');
+var catSelector = $('#cat-selector');
 
 // Globals
-numOfCats = 0;
-
-
+var numOfCats = 0;
 
 // Cat object that stores information about the cats to be clicked
 
@@ -15,15 +14,7 @@ function Cat(name){
   this.catNum = numOfCats
   this.clicks = 0; // tracks number of times cat has been clicked
   this.addCat = function() {
-    catContainer.append(`<div class='cat'>
-      <div class='cat-picture-div'>
-        <img src='img/cat${this.catNum}.jpg' class='cat-pic' id='cat${this.catNum}'>
-      </div>
-      <div class='cat-stats'>
-        <h2>${this.name}</h2>
-        <h3><span id='cat-${this.catNum}'>0</span> clicks!</h3>
-      </div>
-    </div>`);
+    catSelector.append(`<option value="${this.name}"">${this.name}</option>`)
   };
 
   this.increment = function() {
@@ -31,12 +22,24 @@ function Cat(name){
     $(`#cat-${this.catNum}`).text(this.clicks);
     console.log(this.clicks);
   }
+
+  // update cat and information for cat
+  this.updateCat = function(){
+    catContainer.html(`<div class='cat-picture-div'>
+      <img src='img/cat${this.catNum}.jpg' class='cat-pic' id='cat${this.catNum}'>
+    </div>
+    <div class='cat-details-div'>
+      <h2>${this.name}</h2>
+      <h3>Has been clicked <span id='cat-${this.catNum}'>0</span> times!</h3>
+    </div>`);
+  }
 }
 
-var cat1 = new Cat('Leonardo');
-var cat2 = new Cat('Lilypad');
-cat1.addCat();
-cat2.addCat();
+
+//var cat1 = new Cat('Leonardo');
+//var cat2 = new Cat('Lilypad');
+
+//cat2.addCat();
 
 // Globals
 
@@ -53,4 +56,14 @@ cat.click(function(e){
   count++;
   clickCount.text(count);
 });
+
+catContainer.append(`<div class='cat'>
+  <div class='cat-picture-div'>
+    <img src='img/cat${this.catNum}.jpg' class='cat-pic' id='cat${this.catNum}'>
+  </div>
+  <div class='cat-stats'>
+    <h2>${this.name}</h2>
+    <h3><span id='cat-${this.catNum}'>0</span> clicks!</h3>
+  </div>
+</div>`);
 */
