@@ -33,8 +33,8 @@ function Cat(name){
   }
 }
 
-var cat1 = new Cat('pickle');
-var cat2 = new Cat('tookas');
+var cat1 = new Cat('Leonardo');
+var cat2 = new Cat('Lilypad');
 cat1.addCat();
 cat2.addCat();
 
