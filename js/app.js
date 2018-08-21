@@ -2,6 +2,7 @@ var cat = $('#cat-pic');
 var clickCount = $('#click-count');
 var catContainer = $('#cat-container');
 var catSelector = $('#cat-selector');
+var catPic = $('.cat-pic');
 
 // Globals
 var numOfCats = 0;
@@ -14,13 +15,12 @@ function Cat(name){
   this.catNum = numOfCats
   this.clicks = 0; // tracks number of times cat has been clicked
   this.addCat = function() {
-    catSelector.append(`<option value="${this.name}"">${this.name}</option>`)
+    catSelector.append(`<option value="cat${this.catNum}"">${this.name}</option>`)
   };
 
   this.increment = function() {
     this.clicks ++;
     $(`#cat-${this.catNum}`).text(this.clicks);
-    console.log(this.clicks);
   }
 
   // update cat and information for cat
@@ -30,25 +30,38 @@ function Cat(name){
     </div>
     <div class='cat-details-div'>
       <h2>${this.name}</h2>
-      <h3>Has been clicked <span id='cat-${this.catNum}'>0</span> times!</h3>
+      <h3>Has been clicked <span id='cat-${this.catNum}'>${this.clicks}</span> times!</h3>
     </div>`);
+
+    $('img').click(function(e){
+        e.preventDefault();
+        window[this.id].increment();
+    });
+
   }
 }
 
+var cat1 = new Cat('Leonardo');
+var cat2 = new Cat('Lilypad');
+var cat3 = new Cat('Tallow and Tuba');
+var cat4 = new Cat('Pico de Gato');
+var cat5 = new Cat('Ferdinand');
 
-//var cat1 = new Cat('Leonardo');
-//var cat2 = new Cat('Lilypad');
+cat1.addCat();
+cat2.addCat();
+cat3.addCat();
+cat4.addCat();
+cat5.addCat();
 
-//cat2.addCat();
+// Holds cat objects
+const cats = [];
 
-// Globals
-
-var count = 0; // number of times the cat picture has been clicked
-const cats = []; // Holds cat objects
-
-$('.cat-pic').on('click', function(e){
-    e.preventDefault();
-    window[this.id].increment();
+// on selection of cat, updates ui to show selected cats
+catSelector.change(function(e){
+  e.preventDefault();
+  if (catSelector.val() != 'noCat'){
+    window[catSelector.val()].updateCat();
+  }
 });
 
 /*
