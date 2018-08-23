@@ -1,31 +1,3 @@
-$(function(){
-
-  // where the data is contained
-  var model = {
-
-  };
-
-  // works between the model and the two views
-  var octopus = {
-
-  };
-
-  // the view for the cat selection
-  var catSelectionView = {
-
-  };
-
-  // the view that displays the selected cat, name, and number of clicks
-  var catDisplayView = {
-
-  };
-
-});
-
-
-
-
-
 var cat = $('#cat-pic');
 var clickCount = $('#click-count');
 var catContainer = $('#cat-container');
