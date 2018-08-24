@@ -3,124 +3,151 @@ $(function(){
   // where the data is contained
   var model = {
 
-    init: function() {
-      // tracks number of cats created, used to create unique IDs for cats
-      var numOfCats = 0;
+    // current cat //
+    currentCat: 0,
 
-      // Holds cat objects
-      const cats = [];
+    // tracks cats created
+    numOfCats: 0,
 
-      var cat1 = new Cat('Leonardo');
-      var cat2 = new Cat('Lilypad');
-      var cat3 = new Cat('Tallow and Tuba');
-      var cat4 = new Cat('Pico de Gato');
-      var cat5 = new Cat('Ferdinand');
-
-
-    },
-
+    // Cat object constructor
     Cat: function(name){
-      this.name = name;
-      numOfCats ++; // increments nubmer of cats as a counter id
-      this.catNum = numOfCats
-      this.clicks = 0; // tracks number of times cat has been clicked
-      this.addCat = function() {
-        catSelector.append(`<option value="cat${this.catNum}"">${this.name}</option>`)
-      };
+        this.name = name;
+        model.numOfCats ++; // increments nubmer of cats as a unique id
+        this.catNum = model.numOfCats;
+        this.clicks = 0; // tracks number of times cat has been clicked
+        this.addCat = function() {
+          catSelector.append(`<option value="cat${this.catNum}"">${this.name}</option>`)
+        };
 
-      this.increment = function() {
-        this.clicks ++;
-        $(`#cat-${this.catNum}`).text(this.clicks);
-      }
-    },
+        this.increment = function() {
+          this.clicks ++;
+        }
+      },
+
+    // Holds cat objects
+    cats: [],
+
+    init: function(){
+      // create initial cats
+      var cat1 = new model.Cat('Leonardo');
+      model.cats.push(cat1);
+      var cat2 = new model.Cat('Lilypad');
+      model.cats.push(cat2);
+      var cat3 = new model.Cat('Tallow and Tuba');
+      model.cats.push(cat3);
+      var cat4 = new model.Cat('Pico de Gato');
+      model.cats.push(cat4);
+      var cat5 = new model.Cat('Ferdinand');
+      model.cats.push(cat5);
+    }
 
   };
 
   // works between the model and the two views
   var octopus = {
 
-    // increments the number of times the cat picture has been clicked, stored in the cat object
-    increment: function(cat){
-      window[cat].clicks ++;
-      $(`#cat-${window[cat].catNum}`).text(window[cat].clicks);
+    init: function() {
+      model.init();
+      catSelectionView.init();
+      catDisplayView.init();
     },
+
+    getCatId: function(){
+      return model.currentCat;
+    },
+
+    getCatNames: function(){
+      var names = [];
+      for (let cat in model.cats){
+        names.push(model.cats[cat].name);
+      }
+      return names;
+    },
+
+    getCatName: function(){
+      return model.cats[model.currentCat-1].name;
+    },
+
+    getClickCount: function(){
+      return model.cats[model.currentCat-1].clicks;
+    },
+
+    // increments the number of times the cat picture has been clicked, stored in the cat object
+    increment: function(){
+      model.cats[model.currentCat-1].clicks ++;
+      catDisplayView.updateClicks();
+    },
+
+    // sets the current cad id to the selected cat
+    setCurrentCat: function(cat){
+      model.currentCat = cat;
+    }
 
   };
 
   // the view for the cat selection
   var catSelectionView = {
+    init: function(){
+      this.catSelector = $('#cat-selector');
+
+      cats = octopus.getCatNames();
+
+      for (let i in cats){
+        let cat = 1 + parseInt(i);
+        this.catSelector.append(`<option value="${cat}">${cats[cat-1]}</option>`);
+      }
+
+      this.catSelector.change(function(e){
+        e.preventDefault();
+        let catVal = catSelectionView.catSelector.val();
+        if (catVal != 'noCat'){
+          octopus.setCurrentCat(catVal);
+          catDisplayView.render();
+        }
+      });
+    }
 
   };
 
   // the view that displays the selected cat, name, and number of clicks
   var catDisplayView = {
 
+    currentCatId: 0,
+
     init: function() {
-      var cat = $('#cat-pic');
-      var clickCount = $('#click-count');
-      var catContainer = $('#cat-container');
-      var catSelector = $('#cat-selector');
-      var catPic = $('.cat-pic');
+      this.catContainer = $('#cat-container')
+      this.cat = $('#cat-pic');
+      this.catPic = $('.cat-pic');
+      ;
     },
 
     // update cat and information for cat
     render: function(){
-      catContainer.html(`<div class='cat-picture-div'>
-        <img src='img/cat${this.catNum}.jpg' class='cat-pic' id='cat${this.catNum}'>
+      var name = octopus.getCatName();
+      var CatId = octopus.getCatId();
+      var clicks = octopus.getClickCount();
+
+      catDisplayView.catContainer.html(`<div class='cat-picture-div'>
+        <img src='img/cat${CatId}.jpg' class='cat-pic' id='cat${CatId}'>
       </div>
       <div class='cat-details-div'>
-        <h2>${this.name}</h2>
-        <h3>Has been clicked <span id='cat-${this.catNum}'>${this.clicks}</span> times!</h3>
+        <h2>${name}</h2>
+        <h3>Has been clicked <span id='click-count'>${clicks}</span> times!</h3>
       </div>`);
 
+      this.clickCount = $('#click-count');
+
       $('img').click(function(e){
-          e.preventDefault();
-          window[this.id].increment();
+        e.preventDefault();
+        octopus.increment();
       });
 
-    }
+    },
 
-  };
-
+    updateClicks: function(){
+        var count = octopus.getClickCount();
+        catDisplayView.clickCount.text(count);
+      }
+    };
+  octopus.init();
 });
-
-
-
-// Cat object that stores information about the cats to be clicked
-
-
-
-
-
-cat1.addCat();
-cat2.addCat();
-cat3.addCat();
-cat4.addCat();
-cat5.addCat();
-
-
-
-// on selection of cat, updates ui to show selected cats
-catSelector.change(function(e){
-  e.preventDefault();
-  if (catSelector.val() != 'noCat'){
-    window[catSelector.val()].updateCat();
-  }
-});
-
-/*
-cat.click(function(e){
-  count++;
-  clickCount.text(count);
-});
-
-catContainer.append(`<div class='cat'>
-  <div class='cat-picture-div'>
-    <img src='img/cat${this.catNum}.jpg' class='cat-pic' id='cat${this.catNum}'>
-  </div>
-  <div class='cat-stats'>
-    <h2>${this.name}</h2>
-    <h3><span id='cat-${this.catNum}'>0</span> clicks!</h3>
-  </div>
-</div>`);
-*/
