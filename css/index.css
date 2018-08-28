@@ -82,3 +82,25 @@ h3 {
 .cat-details-div {
   padding: 0.5em;
 }
+
+#admin-container {
+  width: 100%;
+  float: left;
+}
+
+#admin-button-div {
+  width: 30%;
+  float: left;
+  padding-top: 0.5em;
+}
+
+#admin-pannel {
+  width: 70%;
+  height: 300px;
+  float: left;
+  padding-top: 0.5em;
+}
+
+.admin-label {
+  width: 200px;
+}

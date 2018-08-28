@@ -149,5 +149,41 @@ $(function(){
         catDisplayView.clickCount.text(count);
       }
     };
+
+    var adminView = {
+
+      adminActive: false,
+
+      init: function() {
+        this.catContainer = $('#cat-container')
+        this.cat = $('#cat-pic');
+        this.catPic = $('.cat-pic');
+        ;
+      },
+
+      // update cat and information for cat
+      render: function(){
+        var name = octopus.getCatName();
+        var CatId = octopus.getCatId();
+        var clicks = octopus.getClickCount();
+
+        catDisplayView.catContainer.html(`<div class='cat-picture-div'>
+          <img src='img/cat${CatId}.jpg' class='cat-pic' id='cat${CatId}'>
+        </div>
+        <div class='cat-details-div'>
+          <h2>${name}</h2>
+          <h3>Has been clicked <span id='click-count'>${clicks}</span> times!</h3>
+        </div>`);
+
+        this.clickCount = $('#click-count');
+
+        $('img').click(function(e){
+          e.preventDefault();
+          octopus.increment();
+        });
+
+      }
+      };
+
   octopus.init();
 });
