@@ -21,27 +21,29 @@
       </div>
       <div id='admin-container'>
         <div id='admin-button-div'>
-          <button>Admin</button>
+          <button id='admin-button'>Admin</button>
         </div>
-        <div id='admin-pannel'>
+        <div id='admin-panel'>
           <form>
-            <div>
-              <label for='admin-namee' class='admin-label'>Name:</label>
-              <input type="text" id='admin-name' name="admin-cat-name"><br>
+            <div class='admin-line'>
+              <div class='admin-label'><label for='admin-namee'>Name:</label></div>
+              <div class='admin-input'><input type="text" id='admin-name' name="admin-cat-name"><br></div>
             </div>
-            <div>
-              <label for='admin-img' class='admin-label'>Img URL:</label>
-              <input type="text" id='admin-img' name="admin-cat-img"><br>
+            <div class='admin-line'>
+              <div class='admin-label'><label for='admin-img'>Img URL:</label></div>
+              <div class='admin-input'><input type="text" id='admin-img' name="admin-cat-img"><br></div>
             </div>
-            <div>
-              <label for='admin-clicks' class='admin-label'># Clicks:</label>
-              <input type="text" id='admin-clicks' name="admin-cat-clicks"><br>
+            <div class='admin-line'>
+              <div class='admin-label'><label for='admin-clicks' ># Clicks:</label></div>
+              <div class='admin-input'><input type="text" id='admin-clicks' name="admin-cat-clicks"><br></div>
             </div>
-            <div>
-              <button>Cancel</button>
-            </div>
-            <div>
-              <input type="submit" value="Submit">
+            <div class='admin-line'>
+              <div class='cancel-div'>
+                <button type="button">Cancel</button>
+              </div>
+              <div class='submit-div'>
+                <input type="button" value="Submit">
+              </div>
             </div>
           </form>
         </div>

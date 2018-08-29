@@ -94,13 +94,33 @@ h3 {
   padding-top: 0.5em;
 }
 
-#admin-pannel {
+#admin-panel {
   width: 70%;
-  height: 300px;
   float: left;
   padding-top: 0.5em;
+  display: none;
+}
+
+.admin-line{
+  width: 100%;
+  padding-bottom: 2em;
 }
 
 .admin-label {
-  width: 200px;
+  width: 25%;
+  float: left;
+}
+
+.admin-input{
+  float: left;
+  width: 75%;
+}
+
+.cancel-div {
+  float: left;
+  margin-right: 1em;
+}
+
+.submit-div {
+  float: left;
 }

@@ -14,6 +14,7 @@ $(function(){
         this.name = name;
         model.numOfCats ++; // increments nubmer of cats as a unique id
         this.catNum = model.numOfCats;
+        this.catImg = `img/cat${this.catNum}`;
         this.clicks = 0; // tracks number of times cat has been clicked
         this.addCat = function() {
           catSelector.append(`<option value="cat${this.catNum}"">${this.name}</option>`)
@@ -50,10 +51,15 @@ $(function(){
       model.init();
       catSelectionView.init();
       catDisplayView.init();
+      adminView.init();
     },
 
     getCatId: function(){
       return model.currentCat;
+    },
+
+    getCatImg: function(){
+      return model.cats[model.currentCat-1].catImg;
     },
 
     getCatNames: function(){
@@ -76,11 +82,14 @@ $(function(){
     increment: function(){
       model.cats[model.currentCat-1].clicks ++;
       catDisplayView.updateClicks();
+      adminView.render();
     },
 
     // sets the current cad id to the selected cat
     setCurrentCat: function(cat){
       model.currentCat = cat;
+      catDisplayView.render();
+      adminView.render();
     }
 
   };
@@ -102,7 +111,6 @@ $(function(){
         let catVal = catSelectionView.catSelector.val();
         if (catVal != 'noCat'){
           octopus.setCurrentCat(catVal);
-          catDisplayView.render();
         }
       });
     }
@@ -118,7 +126,6 @@ $(function(){
       this.catContainer = $('#cat-container')
       this.cat = $('#cat-pic');
       this.catPic = $('.cat-pic');
-      ;
     },
 
     // update cat and information for cat
@@ -155,34 +162,30 @@ $(function(){
       adminActive: false,
 
       init: function() {
-        this.catContainer = $('#cat-container')
-        this.cat = $('#cat-pic');
-        this.catPic = $('.cat-pic');
-        ;
+        var adminButton = $('#admin-button');
+        var adminPanel = $('#admin-panel');
+
+        adminButton.click(function(){
+          self.adminActive = !self.adminActive;
+          adminPanel.toggle();
+        })
       },
 
       // update cat and information for cat
       render: function(){
         var name = octopus.getCatName();
-        var CatId = octopus.getCatId();
+        var catImg = octopus.getCatImg();
         var clicks = octopus.getClickCount();
 
-        catDisplayView.catContainer.html(`<div class='cat-picture-div'>
-          <img src='img/cat${CatId}.jpg' class='cat-pic' id='cat${CatId}'>
-        </div>
-        <div class='cat-details-div'>
-          <h2>${name}</h2>
-          <h3>Has been clicked <span id='click-count'>${clicks}</span> times!</h3>
-        </div>`);
+        var adminName = $('#admin-name');
+        var adminImg = $('#admin-img');
+        var adminClicks = $('#admin-clicks');
 
-        this.clickCount = $('#click-count');
+        adminName.val(name);
+        adminImg.val(catImg);
+        adminClicks.val(clicks);
 
-        $('img').click(function(e){
-          e.preventDefault();
-          octopus.increment();
-        });
-
-      }
+        }
       };
 
   octopus.init();
