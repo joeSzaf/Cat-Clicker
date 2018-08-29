@@ -85,11 +85,25 @@ $(function(){
       adminView.render();
     },
 
-    // sets the current cad id to the selected cat
+    // sets the current cat id to the selected cat
     setCurrentCat: function(cat){
       model.currentCat = cat;
       catDisplayView.render();
       adminView.render();
+    },
+
+    // set Name of current cat
+    setCurrentCatName: function(name){
+      model.cats[model.currentCat-1].name = name;
+    },
+
+    setCurrentCatClicks: function(clicks){
+      model.cats[model.currentCat-1].clicks = parseInt(clicks);
+    },
+
+    setCurrentCatImgUrl: function(src){
+      model.cats[model.currentCat-1].catImg = src;
+      $(`#cat${model.currentCat}`).attr("src", src);
     }
 
   };
@@ -113,6 +127,20 @@ $(function(){
           octopus.setCurrentCat(catVal);
         }
       });
+    },
+
+    render: function(){
+      var catSelector = $('#cat-selector');
+
+      catSelector.html('');
+
+      cats = octopus.getCatNames();
+
+      for (let i in cats){
+        let cat = 1 + parseInt(i);
+        this.catSelector.append(`<option value="${cat}">${cats[cat-1]}</option>`);
+      }
+
     }
 
   };
@@ -164,11 +192,35 @@ $(function(){
       init: function() {
         var adminButton = $('#admin-button');
         var adminPanel = $('#admin-panel');
+        var submitButton = $('#submit-button');
+        var cancelButton = $('#cancel-button');
+        var adminName = $('#admin-name');
+        var adminImg = $('#admin-img');
+        var adminClicks = $('#admin-clicks');
+
+
 
         adminButton.click(function(){
           self.adminActive = !self.adminActive;
           adminPanel.toggle();
-        })
+        });
+
+        // updates the values of the currently selected cat to the input fields
+        submitButton.click(function(){
+          octopus.setCurrentCatName(adminName.val());
+          octopus.setCurrentCatClicks(adminClicks.val());
+          octopus.setCurrentCatImgUrl(adminImg.val());
+          adminView.render();
+          catDisplayView.render();
+          catSelectionView.render();
+
+        });
+
+        // resets the fields in the admin panel to the current values
+        cancelButton.click(function(){
+          adminView.render();
+        });
+
       },
 
       // update cat and information for cat
