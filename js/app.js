@@ -14,7 +14,7 @@ $(function(){
         this.name = name;
         model.numOfCats ++; // increments nubmer of cats as a unique id
         this.catNum = model.numOfCats;
-        this.catImg = `img/cat${this.catNum}`;
+        this.catImg = `img/cat${this.catNum}.jpg`;
         this.clicks = 0; // tracks number of times cat has been clicked
         this.addCat = function() {
           catSelector.append(`<option value="cat${this.catNum}"">${this.name}</option>`)
@@ -161,9 +161,10 @@ $(function(){
       var name = octopus.getCatName();
       var CatId = octopus.getCatId();
       var clicks = octopus.getClickCount();
+      var catImg = octopus.getCatImg();
 
       catDisplayView.catContainer.html(`<div class='cat-picture-div'>
-        <img src='img/cat${CatId}.jpg' class='cat-pic' id='cat${CatId}'>
+        <img src='${catImg}' class='cat-pic' id='cat${CatId}'>
       </div>
       <div class='cat-details-div'>
         <h2>${name}</h2>
